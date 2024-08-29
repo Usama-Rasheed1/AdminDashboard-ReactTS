@@ -1,65 +1,100 @@
-import { useTable, Column, TableOptions } from "react-table";
+import {
+  useTable,
+  Column,
+  TableOptions,
+  useSortBy,
+  usePagination,
+} from "react-table";
+import {
+  AiOutlineSortAscending,
+  AiOutlineSortDescending,
+} from "react-icons/ai";
 
 function TableHOC<T extends object>(
   columns: Column<T>[],
   data: T[],
   containerClassname: string,
-  heading: string
+  heading: string,
+  showPagination: boolean = false
 ) {
-  return function HOC (){
+  return function HOC() {
+    const options: TableOptions<T> = {
+      columns,
+      data,
+      initialState: {
+        pageSize: 4,
+      },
+    };
 
-    const options:TableOptions<T> = {
-        columns,
-        data,
-
-    }
-
-    const {getTableProps, getTableBodyProps, headerGroups, rows, prepareRow} = useTable(options)
-    return <div className={containerClassname}>
+    const {
+      getTableProps,
+      getTableBodyProps,
+      headerGroups,
+      page,
+      prepareRow,
+      nextPage,
+      previousPage,
+      canNextPage,
+      canPreviousPage,
+      pageCount,
+      state: { pageIndex },
+    } = useTable(options, useSortBy, usePagination);
+    return (
+      <div className={containerClassname}>
         <h2 className="heading">{heading}</h2>
 
         <table className="table" {...getTableProps()}>
-            <thead>
-                {
-                    headerGroups.map((headerGroup) => (
-                        <tr {...headerGroup.getHeaderGroupProps()}>
-                            {
-                                headerGroup.headers.map(columns=>(
-                                    <th {...columns.getHeaderProps()}>
-                                        {columns.render("Header")}
-                                    </th>
-                                ))
-                            }
-                        </tr>
-                    ))
-                }
-            </thead>
+          <thead>
+            {headerGroups.map((headerGroup) => (
+              <tr {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((columns) => (
+                  <th
+                    {...columns.getHeaderProps(columns.getSortByToggleProps())}
+                  >
+                    {columns.render("Header")}
+                    {columns.isSorted && (
+                      <span>
+                        {columns.isSortedDesc ? (
+                          <AiOutlineSortDescending />
+                        ) : (
+                          <AiOutlineSortAscending />
+                        )}
+                      </span>
+                    )}
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
 
-            <tbody {...getTableBodyProps()}>
+          <tbody {...getTableBodyProps()}>
+            {page.map((row) => {
+              prepareRow(row);
 
-                {
-                    rows.map(row=>{
-                        prepareRow(row);
-
-                        return <tr {...row.getRowProps()}>
-                            {
-                                row.cells.map(cell=>(
-                                    <td {...cell.getCellProps()}>
-                                        {cell.render("Cell")}
-                                    </td>
-                                ))
-                            }
-                        </tr>
-                    })
-                } 
-
-            </tbody>
+              return (
+                <tr {...row.getRowProps()}>
+                  {row.cells.map((cell) => (
+                    <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                  ))}
+                </tr>
+              );
+            })}
+          </tbody>
         </table>
 
-
-
-
-    </div>
+        {showPagination && (
+          <div className="tablePagination">
+            <button disabled={!canPreviousPage} onClick={previousPage}>
+              Prev
+            </button>
+            <span>{`${pageIndex + 1} - ${pageCount}`}</span>
+            <button disabled={!canNextPage} onClick={nextPage}>
+              Next
+            </button>
+          </div>
+        )}
+      </div>
+    );
   };
 }
 

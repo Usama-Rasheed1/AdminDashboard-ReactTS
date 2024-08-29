@@ -3,6 +3,9 @@
     padding: 2rem;
     overflow: auto;
     @include square(100%);
+    >h2{
+        @include heading;
+    }
 }
 
 
