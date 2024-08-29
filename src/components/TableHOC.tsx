@@ -83,7 +83,10 @@ function TableHOC<T extends object>(
         </table>
 
         {showPagination && (
-          <div className="tablePagination">
+          <div
+            className="tablePagination"
+            style={{ display: pageCount > 1 ? "" : "none" }}
+          >
             <button disabled={!canPreviousPage} onClick={previousPage}>
               Prev
             </button>
