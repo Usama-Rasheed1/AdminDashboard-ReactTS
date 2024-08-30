@@ -44,49 +44,49 @@ const arr: DataType[] = [
     name: "Puma Shoes",
     price: 4564,
     stock: 25,
-    action: <Link to={"/admin/product/sdad"}>Manage</Link>,
+    action: <Link to={"/admin/products/sdad"}>Manage</Link>,
   },
   {
     photo: <img src={img2} alt="s1"></img>,
     name: "Blue Cap",
     price: 9484,
     stock: 5,
-    action: <Link to={"/admin/product/sdad"}>Manage</Link>,
+    action: <Link to={"/admin/products/sdad"}>Manage</Link>,
   },
   {
     photo: <img src={img} alt="s1"></img>,
     name: "Puma Shoes 2",
     price: 9484,
     stock: 89,
-    action: <Link to={"/admin/product/sdad"}>Manage</Link>,
+    action: <Link to={"/admin/products/sdad"}>Manage</Link>,
   },
   {
     photo: <img src={img2} alt="s1"></img>,
     name: "Blue Cap 2",
     price: 9484,
     stock: 5,
-    action: <Link to={"/admin/product/sdad"}>Manage</Link>,
+    action: <Link to={"/admin/products/sdad"}>Manage</Link>,
   },
   {
     photo: <img src={img} alt="s1"></img>,
     name: "Puma Shoes 3",
     price: 9484,
     stock: 5,
-    action: <Link to={"/admin/product/sdad"}>Manage</Link>,
+    action: <Link to={"/admin/products/sdad"}>Manage</Link>,
   },
   {
     photo: <img src={img2} alt="s1"></img>,
     name: "Blue Cap 3",
     price: 9484,
     stock: 5,
-    action: <Link to={"/admin/product/sdad"}>Manage</Link>,
+    action: <Link to={"/admin/products/sdad"}>Manage</Link>,
   },
   {
     photo: <img src={img} alt="s1"></img>,
     name: "Puma Shoes 4",
     price: 9484,
     stock: 5,
-    action: <Link to={"/admin/product/sdad"}>Manage</Link>,
+    action: <Link to={"/admin/products/sdad"}>Manage</Link>,
   },
 ];
 
@@ -101,7 +101,7 @@ const Products = () => {
     <div className="adminContainer">
       <Sidebar />
       <main>{table()}</main>
-      <Link className="createProductBtn" to="/admin/product/new">
+      <Link className="createProductBtn" to="/admin/products/new">
         <FaPlus />
       </Link>
     </div>
