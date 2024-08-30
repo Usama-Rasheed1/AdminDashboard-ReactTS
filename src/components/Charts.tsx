@@ -9,8 +9,11 @@ import {
   ChartData,
   ChartOptions,
   ArcElement,
+  PointElement,
+  LineElement,
+  Filler
 } from "chart.js";
-import { Bar, Doughnut } from "react-chartjs-2";
+import { Bar, Doughnut, Line, Pie } from "react-chartjs-2";
 
 ChartJS.register(
   CategoryScale,
@@ -19,7 +22,10 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend,
-  ArcElement
+  ArcElement,
+  PointElement,
+  LineElement,
+  Filler
 );
 const month = ["January", "February", "March", "April", "May", "June", "July"];
 interface ChartsProps {
@@ -35,42 +41,42 @@ interface ChartsProps {
 
 export const Charts = ({
   horizontal = false,
-  data_1=[],
-  data_2=[],
+  data_1 = [],
+  data_2 = [],
   title_1,
   title_2,
   bgColor_1,
   bgColor_2,
   labels = month,
 }: ChartsProps) => {
-  const options:ChartOptions<"bar"> = {
+  const options: ChartOptions<"bar"> = {
     responsive: true,
-    indexAxis: horizontal ? "y" : "x", 
+    indexAxis: horizontal ? "y" : "x",
     plugins: {
       legend: {
-        display:false,
+        display: false,
       },
       title: {
         display: false,
-        text: "Vertical Bar Chart",    // can't be seen
+        text: "Vertical Bar Chart", // can't be seen
       },
     },
     scales: {
-        y: {
-            beginAtZero: true,
-            grid: {
-                display: false
-            }
+      y: {
+        beginAtZero: true,
+        grid: {
+          display: false,
         },
-        x: {
-            grid: {
-                display: false
-            }
-        }
-    }
+      },
+      x: {
+        grid: {
+          display: false,
+        },
+      },
+    },
   };
 
-  const data:ChartData<"bar", number[], string> = {
+  const data: ChartData<"bar", number[], string> = {
     labels,
     datasets: [
       {
@@ -79,7 +85,7 @@ export const Charts = ({
         backgroundColor: bgColor_1,
         barThickness: "flex",
         barPercentage: 1,
-        categoryPercentage: 0.4
+        categoryPercentage: 0.4,
       },
       {
         label: title_2,
@@ -87,59 +93,155 @@ export const Charts = ({
         backgroundColor: bgColor_2,
         barThickness: "flex",
         barPercentage: 1,
-        categoryPercentage: 0.4
+        categoryPercentage: 0.4,
       },
     ],
   };
 
-  return <Bar data={data} options={options} />;
+  return <Bar width={horizontal ? "200%" : ""} data={data} options={options} />;
 };
-
-
-
-
-
-
-
-
 
 // DoughnutChart
 
-interface DoughnutChartProps{
-    labels: string[];
-    data: number[];
-    backgroundColor: string[];
-    cutout?: number | string;
-    legends?: boolean;
-    offset?: number[];
+interface DoughnutChartProps {
+  labels: string[];
+  data: number[];
+  backgroundColor: string[];
+  cutout?: number | string;
+  legends?: boolean;
+  offset?: number[];
 }
 
-export const DoughnutChart = ({labels, data, backgroundColor, cutout, legends=true, offset}:DoughnutChartProps)=>{
+export const DoughnutChart = ({
+  labels,
+  data,
+  backgroundColor,
+  cutout,
+  legends = true,
+  offset,
+}: DoughnutChartProps) => {
+  const doughnutData: ChartData<"doughnut", number[], string> = {
+    labels,
+    datasets: [
+      {
+        data,
+        backgroundColor,
+        borderWidth: 0,
+        offset,
+      },
+    ],
+  };
 
-    const doughnutData:ChartData<"doughnut", number[], string> = {
-        labels,
-        datasets:[{
-            data, backgroundColor, borderWidth:0, offset
-        }]
-    };
-
-    const doughnutOptions:ChartOptions<"doughnut"> = {
-        responsive: true,
-        plugins:{
-            legend: {
-                display:legends,
-                position:"bottom",
-                labels:{
-                    padding: 40,
-                }
-            }
+  const doughnutOptions: ChartOptions<"doughnut"> = {
+    responsive: true,
+    plugins: {
+      legend: {
+        display: legends,
+        position: "bottom",
+        labels: {
+          padding: 40,
         },
-        cutout
-        
-    };
+      },
+    },
+    cutout,
+  };
 
+  return <Doughnut data={doughnutData} options={doughnutOptions} />;
+};
 
+// PieChart
 
-    return <Doughnut data={doughnutData} options={doughnutOptions}/>
-
+interface PieChartProps {
+  labels: string[];
+  data: number[];
+  backgroundColor: string[];
+  offset?: number[];
 }
+
+export const PieChart = ({
+  labels,
+  data,
+  backgroundColor,
+  offset,
+}: PieChartProps) => {
+  const pieData: ChartData<"pie", number[], string> = {
+    labels,
+    datasets: [
+      {
+        data,
+        backgroundColor,
+        borderWidth: 1,
+        offset,
+      },
+    ],
+  };
+
+  const pieOptions: ChartOptions<"pie"> = {
+    responsive: true,
+    plugins: {
+      legend: {
+        display: false,
+      },
+    },
+  };
+
+  return <Pie data={pieData} options={pieOptions} />;
+};
+
+// LineChart
+interface LineChartProps {
+  data: number[];
+  label: string;
+  backgroundColor: string;
+  borderColor: string;
+  labels?: string[];
+}
+
+export const LineChart = ({
+  data,
+  label,
+  backgroundColor,
+  borderColor,
+  labels = month,
+}: LineChartProps) => {
+  const options: ChartOptions<"line"> = {
+    responsive: true,
+    plugins: {
+      legend: {
+        display: false,
+      },
+      title: {
+        display: false,
+        text: "Vertical Bar Chart", // can't be seen
+      },
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        grid: {
+          display: false,
+        },
+      },
+      x: {
+        grid: {
+          display: false,
+        },
+      },
+    },
+  };
+
+  const lineChartData: ChartData<"line", number[], string> = {
+    labels,
+    datasets: [
+      {
+        fill: true,
+        label,
+        data,
+        backgroundColor,
+        borderColor,
+      },
+    ],
+  };
+
+  return <Line data={lineChartData} options={options} />;
+};

@@ -19,7 +19,7 @@ const orderItems: OrderItemType[] = [
 const TransactionManagement = () => {
   const [order, setOrder] = useState<OrderType>({
     name: "Usama",
-    address: "31-Brexley Street, LA, California",
+    address: "31-Brexley Street",
     city: "LA",
     state: "California",
     country: "USA",
@@ -80,7 +80,7 @@ const TransactionManagement = () => {
           <h5>User Info</h5>
           <p>Name: {name}</p>
           <p>
-            Address: {`${address}, ${city}, ${state}, ${country} ${pinCode}`}
+            Address: {`${address}, ${city}, ${state}, ${country} - ${pinCode}`}
           </p>
 
           <h5>Amount Info</h5>
